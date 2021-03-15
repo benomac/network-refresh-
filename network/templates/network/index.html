@@ -1,0 +1,66 @@
+{% extends "network/layout.html" %}
+{% load static %}
+{% block body %}
+{% if user.is_authenticated %}
+<div id="new-post">
+    
+    <h3>New Post</h3>
+    <form action="{% url 'all_posts' 'post' %}" id="post-form" method="post">
+        {% for element in form %}
+        {{ element.label_tag }}
+        <div class="element">
+            {{ element }}
+        </div>
+    {% endfor %}
+    <div>
+        <input class="sub" type="submit" value="Submit entry"> 
+    </div>
+    </form>
+    
+</div>
+{% endif %}
+
+<div id="all-posts-view">
+    {% for post in page_obj %}
+    {# Each "contact" is a Contact model object. #}
+    
+    <p><a href="{% url 'all_posts' post.user %}"><strong>{{ post.user.username }}</strong></a> said {{ post.post }}<br></p>
+    <p id="this"></p>Date {{ post.timestamp }}<br></p>
+    <p>Followers {{ post.user.followers }}<br></p>
+    <p>followed {{ post.user.followed }}<br></p>
+    <p>Likes {{ post.likes }}</p>
+    <br>
+    <br>
+{% endfor %}
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% if not_logged_in_user %}
+<div id="follow">
+    <button>Follow</button>
+</div>
+{% endif %}
+</div>
+
+
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/net.js' %}"></script>
+{% endblock %}
