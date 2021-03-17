@@ -22,13 +22,19 @@
 
 <div id="all-posts-view">
     {% for post in page_obj %}
-    {# Each "contact" is a Contact model object. #}
+    {# Each "post" is a UserPosts model object. #}
     
-    <p><a href="{% url 'all_posts' post.user %}"><strong>{{ post.user.username }}</strong></a> said {{ post.post }}<br></p>
-    <p id="this"></p>Date {{ post.timestamp }}<br></p>
-    <p>Followers {{ post.user.followers }}<br></p>
-    <p>followed {{ post.user.followed }}<br></p>
-    <p>Likes {{ post.likes }}</p>
+    <!-- makes the usernames displayed with the post links to the usres profile, sends
+    the 'posts username' to the all_posts view -->
+    <div id="user-link"><a href="{% url 'all_posts' post.user %}"><strong id="user-name">{{ post.user.username }}</strong></a> said {{ post.post }}<br></div>
+    <div id="time-stamp"></p>Date {{ post.timestamp }}<br></div>
+    
+    {% if show_foll %}
+    <div id="followers">Followers {{ post.user.followers }}<br></div>
+    <div id="followed">followed {{ post.user.followed }}<br></div>
+    {% endif %}
+    
+    <div id="likes">Likes {{ post.likes }}</div>
     <br>
     <br>
 {% endfor %}
@@ -50,13 +56,22 @@
         {% endif %}
     </span>
 </div>
-
+{% if user.is_authenticated %}
 {% if not_logged_in_user %}
-<div id="follow">
-    <button>Follow</button>
+<div id=buttondiv>
+    <form>
+        <input id="follow" type="submit" value="">
+    </form>
 </div>
 {% endif %}
+{% endif %}
+
+<!-- {% if not_logged_in_user %}
+<div id="follow">
+    <button id="button" data-user={{ not_logged_in_user }}>Follow</button>
 </div>
+{% endif %} -->
+
 
 
 {% endblock %}

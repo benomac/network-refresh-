@@ -6,6 +6,9 @@
         <title>{% block title %}Social Network{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+        <!-- <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script> -->
         {% block script %}
         {% endblock %}
     </head>
@@ -17,17 +20,19 @@
             <div>
               <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
+                    <!-- Loads the user profile, sends 'user' to the all_posts view. -->
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'all_posts' 'user' %}"><strong>{{ user.username }}</strong></a>
+                        <a id="cur_user" class="nav-link" href="{% url 'all_posts' 'user' %}"><strong id="logged_in_user">{{ user.username }}</strong></a>
                     </li>
                 {% endif %}
+                <!-- Displays all posts on the index page, sends 'all' to the all_posts view -->
                 <li class="nav-item">
                   <a id="all-posts" class="nav-link" href="{% url 'all_posts' 'all' %}">All Posts</a>
                 </li>
                 {% if user.is_authenticated %}
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Following</a>
+                        <a class="nav-link" href="{% url 'all_posts' 'following' %}">Following</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
